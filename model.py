@@ -1,27 +1,35 @@
+import torch
 from torch import nn
 
 
 class LSTMStocksModule(nn.Module):
-    HIDDEN_SIZE = 2  # Number of LSTM hidden nodes
-    NUM_LAYERS = 1  # Number of LSTM layers
-    BIAS = True  # Whether to include the bias term for some of LSTM's equations
 
-    def __init__(self):
-        super(LSTMStocksModule, self).__init__()
+    def init(self, input_size=1, hidden_size=64, num_layers=2):
+        super().init()
+
         self.lstm = nn.LSTM(
-            1,
-            self.HIDDEN_SIZE,
-            self.NUM_LAYERS,
-            self.BIAS,
-            batch_first=True
+            input_size=input_size,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            batch_first=True,
+            dropout=0.2 if num_layers > 1 else 0
         )
-        if self.HIDDEN_SIZE > 1:
-            self.linear = nn.Linear(self.HIDDEN_SIZE, 1, bias=False)
+
+        self.fc = nn.Sequential(
+            nn.Linear(hidden_size, 32),
+            nn.ReLU(),
+            nn.Linear(32, 1)
+        )
 
     def forward(self, x):
-        _, (hidden, cell) = self.lstm(x.unsqueeze(-1))
-        out = hidden.squeeze()
-        if self.HIDDEN_SIZE > 1:
-            out = self.linear(out).squeeze()
-        return out
 
+        # x: batch, sequence
+        if x.dim() == 2:
+            x = x.unsqueeze(-1)
+
+        output, _ = self.lstm(x)
+
+        # Last timestep
+        last_output = output[:, -1, :]
+
+        return self.fc(last_output).squeeze(-1)
