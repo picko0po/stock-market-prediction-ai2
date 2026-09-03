@@ -1190,35 +1190,33 @@ def metric_card(
 
 c1, c2, c3, c4 = st.columns(4)
 
-with c1:
+c1, c2, c3, c4 = st.columns(4)
 
+with c1:
     metric_card(
         "R² Score",
-        f"{best_model['R2']:.4f}",
+        f"{float(best_model['R²']):.4f}",
         best_model_name
     )
 
 with c2:
-
     metric_card(
         "MAE",
-        f"{best_model['MAE']:.4f}",
+        f"{float(best_model['MAE']):.4f}",
         best_model_name
     )
 
 with c3:
-
     metric_card(
         "RMSE",
-        f"{best_model['RMSE']:.4f}",
+        f"{float(best_model['RMSE']):.4f}",
         best_model_name
     )
 
 with c4:
-
     metric_card(
         "Direction Accuracy",
-        f"{best_model['Direction'] * 100:.2f}%",
+        f"{float(best_model['Direction Accuracy']) * 100:.2f}%",
         best_model_name
     )
 
