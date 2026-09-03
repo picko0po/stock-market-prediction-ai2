@@ -1297,7 +1297,7 @@ with right:
 
     bars = ax.bar(
         model_results["Model"],
-        model_results["R²"],
+        model_results["R2"],
         color=colors
     )
 
@@ -1312,7 +1312,7 @@ with right:
 
     for bar, value in zip(
         bars,
-        model_results["R²"]
+        model_results["R2"]
     ):
 
         ax.text(
