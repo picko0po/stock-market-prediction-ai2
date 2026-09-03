@@ -117,7 +117,7 @@ st.markdown(
 # ============================================================
 
 SEED = 42
-WINDOW = 10
+WINDOW = 20
 TEST_RATIO = 0.20
 
 np.random.seed(SEED)
@@ -400,7 +400,7 @@ class StockLSTM(nn.Module):
     def __init__(
         self,
         input_size=1,
-        hidden_size=32,
+        hidden_size=64,
         num_layers=2
     ):
 
@@ -501,7 +501,7 @@ def train_lstm(train_values, train_targets):
 
     model.train()
 
-    for epoch in range(35):
+    for epoch in range(100):
 
         for batch_x, batch_y in loader:
 
